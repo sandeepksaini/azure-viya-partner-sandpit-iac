@@ -11,10 +11,10 @@
 EXEC_DIR=$(pwd);
 SCRIPT_DIR=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
 ############################
-pushd ~/_git_home/azure_viya_ca_env_iac/ubuntu_deployer/
-DEFAULT_CONFIG_FILE=ubuntu_deployer-variables.yaml
-eval $(parse_yaml $DEFAULT_CONFIG_FILE)
-popd
+# pushd ~/_git_home/azure_viya_ca_env_iac/ubuntu_deployer/
+# DEFAULT_CONFIG_FILE=ubuntu_deployer-variables.yaml
+# eval $(parse_yaml $DEFAULT_CONFIG_FILE)
+# popd
 ############################
 
 ###########################################################################################################
@@ -43,18 +43,26 @@ function parse_yaml {
 ###########################################################################################################
 ###########################################################################################################
 
-DEFAULT_CONFIG_FILE=moba_deployer-variables.yaml
+DEFAULT_CONFIG_FILE=ubuntu_deployer-variables.yaml
 
 if [ -z "$1" ]
 	then
 		echo "No argument supplied."
-	else
 		# Source default configuration
-		if [ -f $SCRIPT_DIR/$DEFAULT_CONFIG_FILE;
+		if [ -f $SCRIPT_DIR/$DEFAULT_CONFIG_FILE ]
 		then
 			eval $(parse_yaml $SCRIPT_DIR/$DEFAULT_CONFIG_FILE)
 		else
 			echo "The default $DEFAULT_CONFIG_FILE file is missing from the script directory."
+			exit 1;
+		fi
+	else
+		if [ -f $1 ]
+		then
+			eval $(parse_yaml $SCRIPT_DIR/$DEFAULT_CONFIG_FILE)
+		else
+			echo "Argument is not a file"
+			exit 1;
 		fi
 fi
 
@@ -113,7 +121,8 @@ sudo rm -rf ${client_helm_binary}
 # sudo apt-get update
 # sudo apt-get install helm
 
-# Install kubectl
+
+echo "[INFO] installing kubectl $client_kubectl_version..."
 sudo curl -LO "https://dl.k8s.io/release/v${client_kubectl_version}/bin/linux/amd64/kubectl"
 sudo install -o root -g root -m 0755 kubectl /usr/bin/kubectl &&\
 rm -f kubectl
@@ -121,3 +130,5 @@ rm -f kubectl
 # python & pip setup
 ansible localhost -m lineinfile -a "dest=~/.bashrc line='alias python=python3'" --diff
 ansible localhost -m lineinfile -a "dest=~/.bashrc line='alias pip=pip3'" --diff
+
+cd $EXEC_DIR
