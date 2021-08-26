@@ -137,12 +137,14 @@ sudo apt-get update && sudo apt-get install -y \
     nfs-common \
     portmap \
     unzip
-	
 
+# python & pip setup
 ansible localhost -m lineinfile -a "dest=~/.bashrc line='alias python=python3'" --diff
 ansible localhost -m lineinfile -a "dest=~/.bashrc line='alias pip=pip3'" --diff
 pip3 install --upgrade pip
 
+
+# CLI Installs
 echo "[INFO] installing azure-cli $deployment_deployervm_client_azurecli_version..."
 pip3 install azure-cli==${deployment_deployervm_client_azurecli_version}
 

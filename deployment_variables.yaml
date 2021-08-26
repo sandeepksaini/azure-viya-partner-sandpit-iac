@@ -3,7 +3,7 @@
 ###############################
 deployment:
   # 11 CHARACTERS OR LESS - Name the deployment something specific but readable - This is used for the DNS entry to the platform
-  name: 'pov202105'
+  name: 'pov202108'
   environment: 'proving1'
   viya4:
     # Get this information from your POC Viya Order - https://apiportal.sas.com/get-started

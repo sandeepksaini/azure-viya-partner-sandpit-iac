@@ -1,0 +1,23 @@
+client:
+  terraform: 
+    version: '1.0.0'
+  azurecli: 
+    version: '2.2.0'
+  ansible: 
+    version: '3.2.0'
+    ansiblegalaxy:
+      community:
+        kubernetes:
+          version: '1.2.1'
+  kubectl:
+    version: '1.19.11'
+  kustomize: 
+    version: "3.7.0"
+  yq: 
+    version: '3.4.0'
+    binary: 'yq_linux_386'
+  helm:
+    version: '3.6.3'
+    binary: 'linux-amd-64'
+  viya4ordercli:
+    version: '1.0.0'
