@@ -69,26 +69,28 @@ fi
 # Install pre-requisite OS packages
 sudo apt-get update && sudo apt-get install -y \
     python3-pip \
+	net-tools \
     zip \
     curl \
     git \
+    jq \
     jq \
     nfs-common \
     portmap \
     unzip
 
 # python & pip setup
-pip3 install --upgrade pip
+sudo pip3 install --upgrade pip
 
 # Add $HOME/.local/bin/ to PATH, required for some clients
 [[ ":$PATH:" != *":HOME/.local/bin/:"* ]] && PATH="HOME/.local/bin/:${PATH}"
 
 # CLI Installs
 echo "[INFO] installing azure-cli ${client_azurecli_version}..."
-pip3 install azure-cli==${client_azurecli_version}
+sudo pip3 install azure-cli==${client_azurecli_version}
 
 echo "[INFO] installing ansible $client_ansible_version..."
-pip3 install ansible==${client_ansible_version}
+sudo pip3 install ansible==${client_ansible_version}
 
 echo "[INFO] installing terraform $client_terraform_version..."
 mkdir -p /usr/bin
