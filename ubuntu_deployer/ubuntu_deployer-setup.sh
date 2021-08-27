@@ -4,6 +4,9 @@
 
 # Ensure that a permanent home location is setup
 # Run this in your WSL Ubuntu terminal to setup the required client tools to administrate a deployment
+#
+# NOTE:: Best to check your network connections to the required endpoints (like coporate network through VPN) work correctly before starting.
+# Known issues with VPN require some DNS gymnastics
 
 ############################
 # PARAMETER CALCULATION
