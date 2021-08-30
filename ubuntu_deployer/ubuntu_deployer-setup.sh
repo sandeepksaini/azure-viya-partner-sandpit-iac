@@ -50,13 +50,13 @@ DEFAULT_CONFIG_FILE=ubuntu_deployer-variables.yaml
 
 if [ -z "$1" ]
 	then
-		echo "No argument supplied."
+		echo "[INFO] No argument supplied; using the default"
 		# Source default configuration
 		if [ -f $SCRIPT_DIR/$DEFAULT_CONFIG_FILE ]
 		then
 			eval $(parse_yaml $SCRIPT_DIR/$DEFAULT_CONFIG_FILE)
 		else
-			echo "The default $DEFAULT_CONFIG_FILE file is missing from the script directory."
+			echo "[ERROR] The default $DEFAULT_CONFIG_FILE file is missing from the script directory."
 			exit 1;
 		fi
 	else
@@ -64,7 +64,7 @@ if [ -z "$1" ]
 		then
 			eval $(parse_yaml $SCRIPT_DIR/$DEFAULT_CONFIG_FILE)
 		else
-			echo "Argument is not a file"
+			echo "[ERROR] Argument is not a file"
 			exit 1;
 		fi
 fi
@@ -77,7 +77,6 @@ sudo apt-get update && sudo apt-get install -y \
     curl \
     git \
     jq \
-    jq \
     nfs-common \
     portmap \
     unzip
@@ -89,11 +88,11 @@ sudo pip3 install --upgrade pip
 [[ ":$PATH:" != *":HOME/.local/bin/:"* ]] && PATH="HOME/.local/bin/:${PATH}"
 
 # CLI Installs
-echo "[INFO] installing azure-cli ${client_azurecli_version}..."
-sudo pip3 install azure-cli==${client_azurecli_version}
-
 echo "[INFO] installing ansible $client_ansible_version..."
 sudo pip3 install ansible==${client_ansible_version}
+
+echo "[INFO] installing azure-cli ${client_azurecli_version}..."
+sudo pip3 install azure-cli==${client_azurecli_version}
 
 echo "[INFO] installing terraform $client_terraform_version..."
 mkdir -p /usr/bin
@@ -105,7 +104,7 @@ export PATH=$PATH:/usr/bin
 /usr/bin/terraform version
 
 echo "[INFO] installing yq $client_yq_version..."
-sudo wget https://github.com/mikefarah/yq/releases/download/${client_yq_version}/${client_yq_binary} -O /usr/bin/yq &&\
+sudo wget https://github.com/mikefarah/yq/releases/download/${client_yq_version}/yq_${client_yq_binary} -O /usr/bin/yq &&\
     sudo chmod +x /usr/bin/yq
 /usr/bin/yq --version
 
@@ -135,5 +134,21 @@ rm -f kubectl
 # python & pip setup
 ansible localhost -m lineinfile -a "dest=~/.bashrc line='alias python=python3'" --diff
 ansible localhost -m lineinfile -a "dest=~/.bashrc line='alias pip=pip3'" --diff
+
+# Viya Orders CLI
+# https://github.com/sassoftware/viya4-orders-cli/releases/download/1.0.0/viya4-orders-cli_linux_amd64
+# Retrieve viya4-orders-cli
+ansible localhost \
+    -m get_url -a \
+"url=https://github.com/sassoftware/viya4-orders-cli/releases/download/${client_viya4ordercli_version}/viya4-orders-cli_linux_amd64 \
+        dest=/tmp/viya4-orders-cli \
+        validate_certs=no \
+        force=yes \
+        mode=0755 \
+        backup=yes" \
+    --diff
+sudo mv /tmp/viya4-orders-cli /usr/bin/viya4-orders-cli
+sudo chmod 777 /usr/bin/viya4-orders-cli
+viya4-orders-cli -v
 
 cd $EXEC_DIR

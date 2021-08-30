@@ -2,7 +2,7 @@ client:
   terraform: 
     version: '1.0.0'
   azurecli: 
-    version: '2.24.2'
+    version: '2.27.2'
   ansible: 
     version: '3.2.0'
     ansiblegalaxy:
@@ -15,7 +15,7 @@ client:
     version: "3.7.0"
   yq: 
     version: '3.4.0'
-    binary: 'yq_linux_386'
+    binary: 'linux_amd64'
   helm:
     version: '3.6.3'
     binary: 'linux-amd64'

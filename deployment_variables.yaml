@@ -41,7 +41,7 @@ deployment:
         version: "3.7.0"
       yq: 
         version: '3.4.0'
-        binary: 'yq_linux_386'
+        binary: 'yq_linux_amd64'
       viya4ordercli:
         version: '1.0.0'
   deploymentresources:

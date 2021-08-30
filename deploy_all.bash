@@ -534,7 +534,7 @@ ansible-galaxy collection install -r requirements.yaml -f
 #            ...           <- folders containing user defined customizations
 mkdir -p /deployment_resources/deployments/${deployment_name}-viya4aks-aks/${deployment_environment}/site-config
 
-### VIya Orders CLI
+### Viya Orders CLI
 # https://github.com/sassoftware/viya4-orders-cli/releases/download/1.0.0/viya4-orders-cli_linux_amd64
 # Retrieve viya4-orders-cli
 ansible localhost \
@@ -549,6 +549,7 @@ ansible localhost \
 sudo mv /tmp/viya4-orders-cli /usr/bin/viya4-orders-cli
 sudo chmod 777 /usr/bin/viya4-orders-cli
 viya4-orders-cli -v
+
 # Set API client credentials
 CLIENTCREDENTIALSID=$(echo -n ${deployment_viya4_orderapikey} | base64)
 CLIENTCREDENTIALSSECRET=$(echo -n ${deployment_viya4_orderapisecret} | base64)
@@ -633,7 +634,7 @@ EOF
 chmod u+x /deployment_resources/deployments/${deployment_name}-viya4aks-aks/SP_CREDS
 . /deployment_resources/deployments/${deployment_name}-viya4aks-aks/SP_CREDS
 
-# Force TF_CLIENT_CREDS to run next time we re-login
+# Force SP_CREDS to run next time we re-login
 ansible localhost -m lineinfile -a "dest=~/.bashrc line='source /deployment_resources/deployments/${deployment_name}-viya4aks-aks/SP_CREDS'" --diff
 
 
