@@ -107,7 +107,7 @@ tee $HOME/gen_ssh.yaml > /dev/null << EOF
       force: false
 EOF
 
-ansible-playbook gen_ssh.yaml
+ansible-playbook $HOME/gen_ssh.yaml
 
 echo -e "[IMPORTANT] THIS SSH KEY HAS FULL ACCESS TO THE WHOLE DEPLOYMENT. GUARD IT WELL. \n    $HOME/.ssh/${deployment_name}_id_rsa.pub"
 
