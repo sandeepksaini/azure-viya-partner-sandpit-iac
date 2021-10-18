@@ -12,7 +12,7 @@ deployment:
       firstuser:
         uid: 'demo1'
         givenName: 'demo'
-        sirName: 'user'
+        sn: 'user'
         password: '${deployment_environment}_demo'
     secondpostgres:
       adminlogin: 'pgadmin'

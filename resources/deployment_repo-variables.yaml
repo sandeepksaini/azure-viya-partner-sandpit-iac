@@ -5,7 +5,7 @@ deployment:
   viya4:
     # Get this information from your POC Viya Order - https://apiportal.sas.com/get-started
     cadencename: 'stable'
-    cadenceversion: '2021.1.2'
+    cadenceversion: '2021.1.5'
     ordernumber: '09XXXX'
     orderapikey: 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
     orderapisecret: 'XXXXXXXXXXXXXXXX'

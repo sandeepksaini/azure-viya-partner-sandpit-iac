@@ -205,16 +205,20 @@ ansible-playbook \
   -e 'ansible_python_interpreter=/home/ssaima_nix/pyvenv_pov202108/bin/python' \
   playbooks/playbook.yaml --tags "viya,install"
 
-# export PATH=/home/ssaima_nix/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-
-
 
 ### OPENLDAP SETUP ###
 echo "[INFO] OpenLDAP modify users to suit the environment..."
 mkdir -p $HOME/${deployment_name}-aks/${deployment_environment}/site-config/openldap/
-cp -p $HOME/${deployment_name}-aks/viya4-deployment/examples/openldap/openldap-modify-users.yaml $HOME/${deployment_name}-aks/${deployment_environment}/site-config/openldap/openldap-modify-users.yaml
 
-vi $HOME/${deployment_name}-aks/${deployment_environment}/site-config/openldap/openldap-modify-users.yaml
+firstname=$(echo ${deployment_git_user_email} | sed -re 's/([A-z-]+)\.([A-z-]+)@sas\.com/\1/')
+lastname=$(echo ${deployment_git_user_email} | sed -re 's/([A-z-]+)\.([A-z-]+)@sas\.com/\2/')
+sed -r -e "s/basic_user1@example.com/${deployment_git_user_email}/g" \
+-e "s/basic_user1/${deployment_git_user_name}/g" \
+-e "s/Password123/myviya4321/g" \
+-e "s/Basic User 1/${firstname} ${lastname}/g" \
+-e "s/BasicUser/${lastname}/g" $HOME/${deployment_name}-aks/viya4-deployment/examples/openldap/openldap-modify-users.yaml > $HOME/${deployment_name}-aks/${deployment_environment}/site-config/openldap/openldap-modify-users.yaml
+
+
 ####
 #
 # MANUALLY EDIT THE USERS DETAILS IN

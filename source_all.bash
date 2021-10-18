@@ -59,7 +59,7 @@ fi
 if [ -f $SCRIPT_DIR/resources/deployment_repo-variables.yaml ]
 then
     echo "[INFO] Setting deployment_repo-variables "
-    eval $(parse_yaml $SCRIPT_DIR/../resources/deployment_repo-variables.yaml)
+    eval $(parse_yaml $SCRIPT_DIR/resources/deployment_repo-variables.yaml)
 else
     echo "[ERROR] no deployment_repo-variables.yaml file in the expected path!"
     exit 1;

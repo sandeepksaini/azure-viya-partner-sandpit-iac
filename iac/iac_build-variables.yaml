@@ -31,13 +31,13 @@ deployment:
         maxnodes: '3'
         maxpods: '20'
       compute:
-        machinetype: 'Standard_E2ds_v4'
+        machinetype: 'Standard_E4ds_v4'
         osdisksize: '50'
         minnodes: '1'
         maxnodes: '2'
         maxpods: '20'
       connect:
-        machinetype: 'Standard_E2ds_v4'
+        machinetype: 'Standard_E4ds_v4'
         osdisksize: '50'
         minnodes: '1'
         maxnodes: '2'
@@ -49,7 +49,7 @@ deployment:
         maxnodes: '4'
         maxpods: '100'
       stateful:
-        machinetype: 'Standard_E4ds_v4'
+        machinetype: 'Standard_E8ds_v4'
         osdisksize: '200'
         minnodes: '1'
         maxnodes: '6'
