@@ -155,7 +155,7 @@ V4_CFG_POSTGRES_SERVERS:
     internal: true
     server_port: 5432
     database: SharedServices
-  other_db:
+  otherdb:
     internal: true
     admin: ${deployment_environment_secondpostgres_adminlogin}
     password: "${deployment_environment_secondpostgres_adminpassword}"
@@ -190,7 +190,6 @@ ansible-galaxy collection install -r requirements.yaml -f
 # Gather required files, then generate Baseline & Viya deployment manifests
 echo "[INFO] Generate and Install basline"
 ansible-playbook \
-  -vvv \
   -e BASE_DIR=$HOME \
   -e CONFIG=$HOME/${deployment_name}-aks/${deployment_environment}/ansible-vars-iac_manifests.yaml \
   -e TFSTATE=$HOME/${deployment_name}-aks/viya4-iac-azure/terraform.tfstate \
@@ -200,7 +199,6 @@ ansible-playbook \
 # Gather required files, then generate Baseline & Viya deployment manifests
 echo "[INFO] Generate but do not deploy the kustomize template for Viya 4 deployment"
 ansible-playbook \
-  -vvv \
   -e BASE_DIR=$HOME \
   -e CONFIG=$HOME/${deployment_name}-aks/${deployment_environment}/ansible-vars-iac_manifests.yaml \
   -e TFSTATE=$HOME/${deployment_name}-aks/viya4-iac-azure/terraform.tfstate \
