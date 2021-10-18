@@ -14,11 +14,6 @@
 EXEC_DIR=$(pwd);
 SCRIPT_DIR=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
 ############################
-# pushd ~/_git_home/azure_viya_ca_env_iac/ubuntu_deployer/
-# DEFAULT_CONFIG_FILE=ubuntu_deployer-variables.yaml
-# eval $(parse_yaml $DEFAULT_CONFIG_FILE)
-# popd
-############################
 
 ###########################################################################################################
 ### FUNCTION BLOCK ###
@@ -46,53 +41,81 @@ function parse_yaml {
 ###########################################################################################################
 ###########################################################################################################
 
+if [ -f $SCRIPT_DIR/../core-variables.yaml ]
+then
+    echo "[INFO] Setting core-variables"
+    eval $(parse_yaml $SCRIPT_DIR/../core-variables.yaml)
+else
+    echo "[ERROR] no core-variables.yaml file in the parent directory"
+    exit 1;
+fi
+
 DEFAULT_CONFIG_FILE=ubuntu_deployer-variables.yaml
 
 if [ -z "$1" ]
-	then
-		echo "[INFO] No argument supplied; using the default"
-		# Source default configuration
-		if [ -f $SCRIPT_DIR/$DEFAULT_CONFIG_FILE ]
-		then
-			eval $(parse_yaml $SCRIPT_DIR/$DEFAULT_CONFIG_FILE)
-		else
-			echo "[ERROR] The default $DEFAULT_CONFIG_FILE file is missing from the script directory."
-			exit 1;
-		fi
-	else
-		if [ -f $1 ]
-		then
-			eval $(parse_yaml $SCRIPT_DIR/$DEFAULT_CONFIG_FILE)
-		else
-			echo "[ERROR] Argument is not a file"
-			exit 1;
-		fi
+    then
+        echo "[INFO] No argument supplied; using the default"
+        # Source default configuration
+        if [ -f $SCRIPT_DIR/$DEFAULT_CONFIG_FILE ]
+        then
+            eval $(parse_yaml $SCRIPT_DIR/$DEFAULT_CONFIG_FILE)
+        else
+            echo "[ERROR] The default $DEFAULT_CONFIG_FILE file is missing from the script directory."
+            exit 1;
+        fi
+    else
+        if [ -f $1 ]
+        then
+            eval $(parse_yaml $SCRIPT_DIR/$DEFAULT_CONFIG_FILE)
+        else
+            echo "[ERROR] Argument is not a file"
+            exit 1;
+        fi
 fi
 
+## For manual testing you can run this and the functions above in your shell to parse your variables yaml file
+# DEFAULT_CONFIG_FILE=ubuntu_deployer-variables.yaml
+# pushd ~/_git_home/azure_viya_ca_env_iac/ubuntu_deployer/
+# eval $(parse_yaml $DEFAULT_CONFIG_FILE)
+# popd
+############################
+
+
+echo "[INFO] Installing pre-requisite OS packages."
 # Install pre-requisite OS packages
 sudo apt-get update && sudo apt-get install -y \
     python3-pip \
-	net-tools \
+    net-tools \
     zip \
     curl \
     git \
     jq \
     nfs-common \
+    cifs-utils \
     portmap \
     unzip
 
-# python & pip setup
-sudo pip3 install --upgrade pip
+echo "[INFO] creating python virtual environment..."
+sudo pip3 install virtualenv
+cd $HOME
+virtualenv -p /usr/bin/python3 pyvenv_${deployment_name}
+source $HOME/pyvenv_${deployment_name}/bin/activate
+
+echo "[INFO] use 'deactivate' to deactivate python virtual environment adn fall back to root installation and paths"
+echo "[INFO] use 'source $HOME/pyvenv_${deployment_name}/bin/activate' to re-activate the python virtual environment for this deployment"
+echo "[INFO] see https://docs.python.org/3/tutorial/venv.html for usage details"
+
+pip3 install --upgrade pip
 
 # Add $HOME/.local/bin/ to PATH, required for some clients
 [[ ":$PATH:" != *":HOME/.local/bin/:"* ]] && PATH="HOME/.local/bin/:${PATH}"
 
 # CLI Installs
 echo "[INFO] installing ansible $client_ansible_version..."
-sudo pip3 install ansible==${client_ansible_version}
+pip3 install ansible==${client_ansible_version}
 
 echo "[INFO] installing azure-cli ${client_azurecli_version}..."
-sudo pip3 install azure-cli==${client_azurecli_version}
+pip3 install azure-cli==${client_azurecli_version}
 
 echo "[INFO] installing terraform $client_terraform_version..."
 mkdir -p /usr/bin
@@ -135,7 +158,27 @@ rm -f kubectl
 ansible localhost -m lineinfile -a "dest=~/.bashrc line='alias python=python3'" --diff
 ansible localhost -m lineinfile -a "dest=~/.bashrc line='alias pip=pip3'" --diff
 
+#### Setup kustomize
+echo "[INFO] installing kustomize $client_kustomize_version..."
+ansible localhost \
+    -m get_url -a \
+    "url=https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv${client_kustomize_version}/kustomize_v${client_kustomize_version}_linux_amd64.tar.gz \
+        dest=/tmp/kustomize.tgz \
+        validate_certs=no \
+        force=yes \
+        mode=0755 \
+        backup=yes" \
+    --diff
+
+cd /tmp/ ; tar xf /tmp/kustomize.tgz
+
+sudo cp /tmp/kustomize /usr/bin/kustomize
+sudo chmod 777 /usr/bin/kustomize
+kustomize version
+
+
 # Viya Orders CLI
+echo "[INFO] installing SAS Viya Orders CLI $client_viya4ordercli_version..."
 # https://github.com/sassoftware/viya4-orders-cli/releases/download/1.0.0/viya4-orders-cli_linux_amd64
 # Retrieve viya4-orders-cli
 ansible localhost \
@@ -152,3 +195,5 @@ sudo chmod 777 /usr/bin/viya4-orders-cli
 viya4-orders-cli -v
 
 cd $EXEC_DIR
+
+echo -e "This terminal is now equipped to start deploying Viya into Azure."

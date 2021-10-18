@@ -1,0 +1,19 @@
+###############################
+## VIYA_DEPLOYMENT-VARIABLES.YAML ##
+###############################
+deployment:
+  environment:
+    ingress:
+      sourceranges: "[\"192.31.37.2/32\"]"
+    openldap:
+      adminpassword: 'pov202108ldap'
+      adminuser:
+        password: ''
+      firstuser:
+        uid: 'ssaima'
+        givenName: 'Isaac'
+        sirName: ''Marsh
+        password: ''
+    secondpostgres:
+      adminlogin: 'pgadmin'
+      adminpassword: 'KeysToTheData2021'
