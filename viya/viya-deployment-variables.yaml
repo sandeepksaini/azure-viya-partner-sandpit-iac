@@ -6,14 +6,14 @@ deployment:
     ingress:
       sourceranges: "[\"192.31.37.2/32\"]"
     openldap:
-      adminpassword: 'pov202108ldap'
+      adminpassword: '${deployment_environment}_ldap'
       adminuser:
-        password: ''
+        password: '${deployment_environment}_viya'
       firstuser:
-        uid: 'ssaima'
-        givenName: 'Isaac'
-        sirName: ''Marsh
-        password: ''
+        uid: 'demo1'
+        givenName: 'demo'
+        sirName: 'user'
+        password: '${deployment_environment}_demo'
     secondpostgres:
       adminlogin: 'pgadmin'
       adminpassword: 'KeysToTheData2021'

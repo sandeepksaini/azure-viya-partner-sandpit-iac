@@ -1,12 +1,12 @@
 deployment:
   # 11 CHARACTERS OR LESS - Name the deployment something specific but readable - This is used for the DNS entry to the platform
-  name: 'pov202108'
-  environment: 'proving1'
+  name: '<deploymentname>'
+  environment: '<environmentname>'
   git:
-    gitbase: "gitlab.sas.com/ssaima/"
+    gitbase: "<gitlab.sas.com/<your_username>/"
     user:
-      name: "ssaima"
-      email: "Isaac.Marsh@sas.com"
+      name: "<your_username>"
+      email: "<Your.Email@sas.com>"
   azure:
     location: 'australiaeast'
-    subscription: 'sas-ssaima'
+    subscription: '<Your subscription name>'
