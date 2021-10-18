@@ -78,6 +78,12 @@ if [ -z "$1" ]
 		fi
 fi
 
+
+## SITE CONFIG
+echo "[INFO] Copy license to site-config (this is a workaround)"
+mkdir -p $HOME/${deployment_name}-aks/${deployment_environment}/site-config
+cp -p ${deployment_viya4_licensepath} $HOME/${deployment_name}-aks/${deployment_environment}/site-config/license.jwt
+
 # Initialize Terraform
 echo "[INFO] Initialize Terraform."
 cd $HOME/${deployment_name}-aks/viya4-iac-azure

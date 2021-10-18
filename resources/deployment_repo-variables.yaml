@@ -13,6 +13,3 @@ deployment:
       tag: '4.0.0'
     viya4deployment:
       versiontag: '4.2.0'
-    certpath: '$(readlink -f $HOME/${deployment_name}-aks/orders/${deployment_viya4_ordernumber}/*${deployment_viya4_ordernumber}_certs.zip)'
-    licensepath: '$(readlink -f $HOME/${deployment_name}-aks/orders/${deployment_viya4_ordernumber}/*${deployment_viya4_ordernumber}_${deployment_viya4_cadencename}_${deployment_viya4_cadenceversion}_license*.jwt)'
-    assetspath: '$(ls -1 $HOME/${deployment_name}-aks/orders/${deployment_viya4_ordernumber}/${deployment_viya4_cadencename}/${deployment_viya4_cadenceversion}/SASViyaV4_${deployment_viya4_ordernumber}_${deployment_viya4_cadencename}_${deployment_viya4_cadenceversion}*.tgz | tail -n1)'

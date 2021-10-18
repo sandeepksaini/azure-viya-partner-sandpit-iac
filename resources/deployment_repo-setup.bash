@@ -44,7 +44,7 @@ function parse_yaml {
 }
 ###########################################################################################################
 ###########################################################################################################
-#SCRIPT_DIR=~/_git_home/azure_viya_ca_env_iac/resources/
+
 if [ -f $SCRIPT_DIR/../core-variables.yaml ]
 then
     echo "[INFO] Setting core-variables"
@@ -232,9 +232,3 @@ viya4-orders-cli deploymentAssets ${deployment_viya4_ordernumber} ${deployment_v
 # Dynamically resolved variable now! (At parse time! How cool!)
 # Set path variables
 #deployment_viya4_assetspath=$(ls -1 $HOME/${deployment_name}-aks/orders/${deployment_viya4_ordernumber}/${deployment_viya4_cadencename}/${deployment_viya4_cadenceversion}/SASViyaV4_${deployment_viya4_ordernumber}_${deployment_viya4_cadencename}_${deployment_viya4_cadenceversion}*.tgz | tail -n1)
-
-
-## SITE CONFIG
-echo "[INFO] Copy license to site-config (this is a workaround)"
-mkdir -p $HOME/${deployment_name}-aks/${deployment_environment}/site-config
-cp -p ${deployment_viya4_licensepath} $HOME/${deployment_name}-aks/${deployment_environment}/site-config/license.jwt
