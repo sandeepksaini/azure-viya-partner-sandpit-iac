@@ -67,7 +67,7 @@ fi
 
 if [ -f $SCRIPT_DIR/iac/iac_build-variables.yaml ]
 then
-    echo "[INFO] Setting deployment_repo-variables "
+    echo "[INFO] Setting iac_build-variables "
     eval $(parse_yaml $SCRIPT_DIR/iac/iac_build-variables.yaml)
 else
     echo "[ERROR] no iac_build-variables.yaml file in the expected path!"
