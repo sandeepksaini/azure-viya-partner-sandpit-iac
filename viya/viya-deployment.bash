@@ -213,7 +213,7 @@ firstname=$(echo ${deployment_git_user_email} | sed -re 's/([A-z-]+)\.([A-z-]+)@
 lastname=$(echo ${deployment_git_user_email} | sed -re 's/([A-z-]+)\.([A-z-]+)@sas\.com/\2/')
 sed -r -e "s/basic_user1@example.com/${deployment_git_user_email}/g" \
 -e "s/basic_user1/${deployment_git_user_name}/g" \
--e "s/Password123/myviya4321/g" \
+-e "s/Password123/${deployment_environment_openldap_viyaadminspassword}/g" \
 -e "s/Basic User 1/${firstname} ${lastname}/g" \
 -e "s/BasicUser/${lastname}/g" $HOME/${deployment_name}-aks/viya4-deployment/examples/openldap/openldap-modify-users.yaml > $HOME/${deployment_name}-aks/${deployment_environment}/site-config/openldap/openldap-modify-users.yaml
 ####
@@ -231,7 +231,7 @@ metadata:
 patch: |-
   - op: replace
     path: /data/LDAP_ADMIN_PASSWORD
-    value: ${deployment_environment_openldap_adminpassword}
+    value: ${deployment_environment_openldap_ldappassword}
 target:
   kind: ConfigMap
   name: openldap-bootstrap-config
@@ -244,7 +244,7 @@ config:
     application:
         sas.identities.providers.ldap.connection:
             host: ldap-svc
-            password: ${deployment_environment_openldap_adminpassword}
+            password: ${deployment_environment_openldap_ldappassword}
             port: 389
             userDN: cn=admin,dc=example,dc=com
         sas.identities.providers.ldap.group:
@@ -262,7 +262,7 @@ config:
             objectClass: inetOrgPerson
             objectFilter: (objectClass=inetOrgPerson)
             searchFilter: uid={0}
-        sas.logon.initial.password: ${deployment_environment}admin
+        sas.logon.initial.password: ${deployment_environment_openldap_viyaadminspassword}
     identities:
         sas.identities:
             administrator: viya_admin

@@ -6,14 +6,9 @@ deployment:
     ingress:
       sourceranges: "[\"192.31.37.2/32\"]"
     openldap:
-      adminpassword: '${deployment_environment}_ldap'
-      adminuser:
-        password: '${deployment_environment}_viya'
-      firstuser:
-        uid: 'demo1'
-        givenName: 'demo'
-        sn: 'user'
-        password: '${deployment_environment}_demo'
+      ldappassword: '${deployment_environment}_ldap'
+      # viyaadminspassword is set for both the viya_admin user and sasboot
+      viyaadminspassword: '${deployment_environment}_viya'
     secondpostgres:
       adminlogin: 'pgadmin'
       adminpassword: 'KeysToTheData2021'
