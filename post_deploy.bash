@@ -1,10 +1,8 @@
 #!/bin/bash
 
-#### Viya4 Deployment ####
+#### Viya4 Post Deployment ####
 
-# This script assumes you have the deployer environment setup (ubuntu_deployer-setup.sh)
-# and the initial deployment configuration path is setup either initially (deployment-repo-setup.bash), or from a git pull
-# and there is an IAC deployment 
+# This script assumes you have a running viya4 environment setup with the scripts in this repo
 
 
 ############################
@@ -51,7 +49,7 @@ fi
 # DEFAULT_CONFIG_FILE=post-deploy-variables.yaml
 
 # ############################
-# # pushd ~/_git_home/azure_viya_ca_env_iac/viya/
+# # pushd ~/_git_home/azure_viya_ca_env_iac/
 # # DEFAULT_CONFIG_FILE=post-deploy-variables.yaml
 # # eval $(parse_yaml $DEFAULT_CONFIG_FILE)
 # # popd
@@ -83,6 +81,7 @@ fi
 ############################
 ## Scheduled Stop/Start
 ############################
+echo "[INFO] Generate Start/Stop Transformers"
 mkdir $HOME/${deployment_name}-aks/${deployment_environment}/site-config/admin
 cd $HOME/${deployment_name}-aks/${deployment_environment}/
 cat > ./site-config/admin/scheduledStop.yaml << EOF
@@ -121,7 +120,7 @@ target:
   kind: CronJob
 EOF
 
-
+echo "[INFO] Ansible task to add references in kustomization.yaml"
 cat > ./addScheduledStartStop.yml << EOF
 ---
 - hosts: localhost
@@ -139,10 +138,12 @@ EOF
 ansible-playbook ./addScheduledStartStop.yml --diff
 
 
-
-
-
-
-
+echo "[INFO] Rebuild site.yaml from all kustomizations"
 kustomize build -o site.yaml
+echo "[INFO] Apply to the environment"
 kubectl -n ${deployment_environment} apply -f site.yaml
+
+kubectl get cronjobs;
+
+echo "[INFO] Check that the start and stop jobs above are no longer suspended and have the updated schedule"
+echo "[INFO] All resources are deployed in UTC by default."
