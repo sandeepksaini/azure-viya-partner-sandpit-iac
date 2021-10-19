@@ -76,12 +76,6 @@ fi
         # fi
 # fi
 
-############################
-## Port-forward the pgAdmin pod
-############################
-echo "[INFO] Port-forward the pgAdmin pod"
-pgpod=$(kubectl -o wide get pods | grep sas-crunchy-data-pgadmin | awk '{ print $1 }')
-kubectl -n ${deployment_environment} port-forward ${pgpod} --address 0.0.0.0 5050:5050
 
 ############################
 ## Scheduled Stop/Start
