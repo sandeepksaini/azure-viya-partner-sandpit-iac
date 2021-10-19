@@ -68,24 +68,24 @@ DEFAULT_CONFIG_FILE=viya-deployment-variables.yaml
 ############################
 
 if [ -z "$1" ]
-	then
-		echo "[INFO] No argument supplied; using the default"
-		# Source default configuration
-		if [ -f $SCRIPT_DIR/$DEFAULT_CONFIG_FILE ]
-		then
-			eval $(parse_yaml $SCRIPT_DIR/$DEFAULT_CONFIG_FILE)
-		else
-			echo "[ERROR] The default $DEFAULT_CONFIG_FILE file is missing from the script directory."
-			exit 1;
-		fi
-	else
-		if [ -f $1 ]
-		then
-			eval $(parse_yaml $SCRIPT_DIR/$DEFAULT_CONFIG_FILE)
-		else
-			echo "[ERROR] Argument is not a file"
-			exit 1;
-		fi
+    then
+        echo "[INFO] No argument supplied; using the default"
+        # Source default configuration
+        if [ -f $SCRIPT_DIR/$DEFAULT_CONFIG_FILE ]
+        then
+            eval $(parse_yaml $SCRIPT_DIR/$DEFAULT_CONFIG_FILE)
+        else
+            echo "[ERROR] The default $DEFAULT_CONFIG_FILE file is missing from the script directory."
+            exit 1;
+        fi
+    else
+        if [ -f $1 ]
+        then
+            eval $(parse_yaml $SCRIPT_DIR/$DEFAULT_CONFIG_FILE)
+        else
+            echo "[ERROR] Argument is not a file"
+            exit 1;
+        fi
 fi
 
 
@@ -186,7 +186,7 @@ pip3 install -r requirements.txt
 
 # install ansible collections
 ansible-galaxy collection install -r requirements.yaml -f
-	
+    
 # Gather required files, then generate Baseline & Viya deployment manifests
 echo "[INFO] Generate and Install basline"
 ansible-playbook \
@@ -205,7 +205,6 @@ ansible-playbook \
   -e 'ansible_python_interpreter=/home/ssaima_nix/pyvenv_pov202108/bin/python' \
   playbooks/playbook.yaml --tags "viya,install"
 
-
 ### OPENLDAP SETUP ###
 echo "[INFO] OpenLDAP modify users to suit the environment..."
 mkdir -p $HOME/${deployment_name}-aks/${deployment_environment}/site-config/openldap/
@@ -217,8 +216,6 @@ sed -r -e "s/basic_user1@example.com/${deployment_git_user_email}/g" \
 -e "s/Password123/myviya4321/g" \
 -e "s/Basic User 1/${firstname} ${lastname}/g" \
 -e "s/BasicUser/${lastname}/g" $HOME/${deployment_name}-aks/viya4-deployment/examples/openldap/openldap-modify-users.yaml > $HOME/${deployment_name}-aks/${deployment_environment}/site-config/openldap/openldap-modify-users.yaml
-
-
 ####
 #
 # MANUALLY EDIT THE USERS DETAILS IN
@@ -271,6 +268,15 @@ config:
             administrator: viya_admin
 EOF
 
+
+echo "[INFO] Add the pgAdmin pod overlay for access to the PostgreSQL servers"
+ansible localhost \
+    -m lineinfile \
+    -a "dest=$HOME/${deployment_name}-aks/${deployment_environment}/kustomization.yaml \
+        line='  - sas-bases/overlays/crunchydata_pgadmin' \
+        state=present \
+        insertafter='^  - sas-bases/overlays/cas-server/auto-resources$'" \
+    --diff
 
 ###################################################################
 #
