@@ -37,10 +37,10 @@ function parse_yaml {
 ###########################################################################################################
 ###########################################################################################################
 
-if [ -f $SCRIPT_DIR/../core-variables.yaml ]
+if [ -f $SCRIPT_DIR/core-variables.yaml ]
 then
     echo "[INFO] Setting core-variables"
-    eval $(parse_yaml $SCRIPT_DIR/../core-variables.yaml)
+    eval $(parse_yaml $SCRIPT_DIR/core-variables.yaml)
 else
     echo "[ERROR] no core-variables.yaml file in the parent directory"
     exit 1;
