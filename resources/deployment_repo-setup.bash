@@ -87,6 +87,7 @@ if [ -z "$1" ]
         fi
 fi
 
+source $HOME/pyvenv_${deployment_name}/bin/activate
 
 # Configure GIT
 echo "[INFO] Configuring git client."
@@ -94,6 +95,7 @@ git config --global user.name ${deployment_git_user_name}
 git config --global user.email ${deployment_git_user_email}
 
 # Create an SSH key for use with Gitlab/Github AND the deployment
+mkdir $HOME/.ssh
 echo "[INFO] Generate SSH key for this deployment (git authorisation and deployment resource access)"
 tee $HOME/gen_ssh.yaml > /dev/null << EOF
 ---
@@ -162,10 +164,10 @@ echo "[PROMPT] Login to Azure..."
 az login --use-device-code
 
 # Set Location & Subscription
-echo "[INFO] Setting default location to $deployment_azure_location"
-az configure --defaults location=${deployment_azure_location}
 echo "[INFO] Setting default subscription to $deployment_azure_subscription"
 az account set -s ${deployment_azure_subscription}
+echo "[INFO] Setting default location to $deployment_azure_location"
+az configure --defaults location=${deployment_azure_location}
 
 # Create an Azure Service Principal for Terraform
 echo "[INFO] Create an Azure Service Principal for Terraform."
@@ -190,6 +192,7 @@ TF_VAR_client_id      -->   ${TF_VAR_client_id}
 TF_VAR_client_secret  -->   ${TF_VAR_client_secret}\n"
 
 # save the TF environment variables value for the next time
+if [ -z $TF_VAR_subscription_id ] && [ -z $TF_VAR_tenant_id ] && [ -z $TF_VAR_client_id ] && [ -z $TF_VAR_client_secret ]; then
 tee $HOME/${deployment_name}-aks/TF_CLIENT_CREDS > /dev/null << EOF
 export TF_VAR_subscription_id=${TF_VAR_subscription_id}
 export TF_VAR_tenant_id=${TF_VAR_tenant_id}
@@ -206,12 +209,22 @@ echo "[INFO] Setting Terraform environment variables sourcing at login."
 ansible localhost -m lineinfile -a "dest=$HOME/.bashrc line='source $HOME/${deployment_name}-aks/TF_CLIENT_CREDS'" --diff
 echo "[INFO] To use different Terraform credentials for a different environment, comment and uncomment $HOME/.bashrc as required."
 fi
+fi
 
 ############################
 # Download Order
 ############################
 # License and Certificates (order scoped)
 echo "[INFO] Downloading Order license and certificates"
+
+# Set Viya 4 Order API client credentials
+CLIENTCREDENTIALSID=$(echo -n ${deployment_viya4_orderapikey} | base64)
+CLIENTCREDENTIALSSECRET=$(echo -n ${deployment_viya4_orderapisecret} | base64)
+tee $HOME/.viya4-orders-cli > /dev/null << EOF
+clientCredentialsId: ${CLIENTCREDENTIALSID}
+clientCredentialsSecret: ${CLIENTCREDENTIALSSECRET}
+EOF
+
 mkdir -p $HOME/${deployment_name}-aks/orders/${deployment_viya4_ordernumber}/
 pushd $HOME/${deployment_name}-aks/orders/${deployment_viya4_ordernumber}/
 viya4-orders-cli certificates ${deployment_viya4_ordernumber}

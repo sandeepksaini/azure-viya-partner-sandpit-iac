@@ -89,7 +89,7 @@ if [ -z "$1" ]
 fi
 
 
-
+source $HOME/pyvenv_${deployment_name}/bin/activate
 
 echo "[INFO] Environment folder setup"
 #### INITIAL SETUP ####

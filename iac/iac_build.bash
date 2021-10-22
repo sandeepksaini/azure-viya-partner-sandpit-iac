@@ -86,6 +86,7 @@ if [ -z "$1" ]
 		fi
 fi
 
+source $HOME/pyvenv_${deployment_name}/bin/activate
 
 ## SITE CONFIG
 echo "[INFO] Copy license to site-config (this is a workaround)"
