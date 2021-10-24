@@ -123,6 +123,13 @@ create_jump_public_ip                = "false"
 # tags in azure
 tags                                 = { "resourceowner" = "${EMAIL}" , project_name = "${deployment_name}", environment = "${deployment_environment}" }
 
+#### Azure Auth ####
+# not required if already set in TF environment variables?
+# tenant_id                            = ${TF_VAR_tenant_id}
+# subscription_id                      = ${TF_VAR_subscription_id}
+# client_id                            = ${TF_VAR_client_id}
+# client_secret                        = ${TF_VAR_client_secret}
+
 #### Admin Access ####
 # IP Ranges allowed to access all created cloud resources
 default_public_access_cidrs         = ${deployment_iac_network_defaultpublicaccesscidrs}

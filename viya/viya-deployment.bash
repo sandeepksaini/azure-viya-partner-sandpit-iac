@@ -193,7 +193,7 @@ ansible-playbook \
   -e BASE_DIR=$HOME \
   -e CONFIG=$HOME/${deployment_name}-aks/${deployment_environment}/ansible-vars-iac_manifests.yaml \
   -e TFSTATE=$HOME/${deployment_name}-aks/viya4-iac-azure/terraform.tfstate \
-  -e 'ansible_python_interpreter=/home/ssaima_nix/pyvenv_pov202108/bin/python' \
+  -e ansible_python_interpreter=$HOME/pyvenv_${deploment_name}/bin/python \
   playbooks/playbook.yaml --tags "baseline,install"
 
 # Gather required files, then generate Baseline & Viya deployment manifests
@@ -202,7 +202,7 @@ ansible-playbook \
   -e BASE_DIR=$HOME \
   -e CONFIG=$HOME/${deployment_name}-aks/${deployment_environment}/ansible-vars-iac_manifests.yaml \
   -e TFSTATE=$HOME/${deployment_name}-aks/viya4-iac-azure/terraform.tfstate \
-  -e 'ansible_python_interpreter=/home/ssaima_nix/pyvenv_pov202108/bin/python' \
+  -e ansible_python_interpreter=$HOME/pyvenv_${deploment_name}/bin/python \
   playbooks/playbook.yaml --tags "viya,install"
 
 ### OPENLDAP SETUP ###

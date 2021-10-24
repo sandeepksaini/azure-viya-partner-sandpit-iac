@@ -208,6 +208,9 @@ chmod o-rwx $HOME/${deployment_name}-aks/TF_CLIENT_CREDS
 echo "[INFO] Setting Terraform environment variables sourcing at login."
 ansible localhost -m lineinfile -a "dest=$HOME/.bashrc line='source $HOME/${deployment_name}-aks/TF_CLIENT_CREDS'" --diff
 echo "[INFO] To use different Terraform credentials for a different environment, comment and uncomment $HOME/.bashrc as required."
+else
+	echo "[ERROR] Something went wrong when creating the service principle"
+	exit 1;
 fi
 fi
 
