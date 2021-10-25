@@ -88,8 +88,9 @@ if [ -z "$1" ]
         fi
 fi
 
-
+# Ensure the environment is sourced as expected
 source $HOME/pyvenv_${deployment_name}/bin/activate
+source $HOME/${deployment_name}-aks/TF_CLIENT_CREDS
 
 echo "[INFO] Environment folder setup"
 #### INITIAL SETUP ####

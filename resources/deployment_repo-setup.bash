@@ -202,7 +202,7 @@ EOF
 
 chmod u+x $HOME/${deployment_name}-aks/TF_CLIENT_CREDS
 chmod o-rwx $HOME/${deployment_name}-aks/TF_CLIENT_CREDS
-. $HOME/${deployment_name}-aks/TF_CLIENT_CREDS
+source $HOME/${deployment_name}-aks/TF_CLIENT_CREDS
 
 # Force TF_CLIENT_CREDS to run next time we re-login
 echo "[INFO] Setting Terraform environment variables sourcing at login."
@@ -212,6 +212,8 @@ else
 	echo "[ERROR] Something went wrong when creating the service principle"
 	exit 1;
 fi
+else
+source $HOME/${deployment_name}-aks/TF_CLIENT_CREDS
 fi
 
 ############################

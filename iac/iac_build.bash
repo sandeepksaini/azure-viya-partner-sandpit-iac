@@ -86,7 +86,9 @@ if [ -z "$1" ]
 		fi
 fi
 
+# Ensure the environment is sourced as expected
 source $HOME/pyvenv_${deployment_name}/bin/activate
+source $HOME/${deployment_name}-aks/TF_CLIENT_CREDS
 
 ## SITE CONFIG
 echo "[INFO] Copy license to site-config (this is a workaround)"
