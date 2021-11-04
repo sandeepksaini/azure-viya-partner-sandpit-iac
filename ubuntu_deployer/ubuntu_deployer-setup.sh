@@ -81,6 +81,19 @@ fi
 ############################
 
 
+############################
+# DNS workaround for resolution with SAS VPN and WSL issues
+############################
+echo "[INFO] Running DNS fix for SAS VPN and WSL issues"
+sudo unlink /etc/resolv.conf # this will unlink the default wsl2 resolv.conf
+sudo cp /run/resolvconf/resolv.conf /etc/resolv.conf
+sudo perl -p -i -e 's/nameserver 172\.26\.40\.178/nameserver 8.8.8.8\nnameserver 172.26.40.178/' /etc/resolv.conf
+
+# Make resolv.conf immutable so WSL doesn't clobber it on startup
+echo "[INFO] Make resolv.conf immutable to prevent clobbering by WSL on startup"
+sudo chattr -f +i /etc/resolv.conf;
+
+
 echo "[INFO] Installing pre-requisite OS packages."
 # Install pre-requisite OS packages
 sudo apt-get update && sudo apt-get install -y \

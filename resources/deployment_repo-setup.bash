@@ -158,12 +158,6 @@ git checkout tags/${deployment_viya4_viya4deployment_versiontag}
 
 
 ############################
-# DNS workaround for resolution with SAS VPN 
-############################
-sudo perl -i -e 's/nameserver 172.26.40.178/nameserver 8.8.8.8\nnameserver 172.26.40.178/' /etc/resolv.conf
-
-
-############################
 # AZURE CREDENTIALS
 ############################
 if ! [ $(az ad signed-in-user show | jq -S '.accountEnabled') ];
