@@ -194,7 +194,7 @@ ansible-playbook \
   -e BASE_DIR=$HOME \
   -e CONFIG=$HOME/${deployment_name}-aks/${deployment_environment}/ansible-vars-iac_manifests.yaml \
   -e TFSTATE=$HOME/${deployment_name}-aks/viya4-iac-azure/terraform.tfstate \
-  -e ansible_python_interpreter=$HOME/pyvenv_${deploment_name}/bin/python \
+  -e ansible_python_interpreter=$HOME/pyvenv_${deployment_name}/bin/python \
   playbooks/playbook.yaml --tags "baseline,install"
 
 # Gather required files, then generate Baseline & Viya deployment manifests
@@ -203,7 +203,7 @@ ansible-playbook \
   -e BASE_DIR=$HOME \
   -e CONFIG=$HOME/${deployment_name}-aks/${deployment_environment}/ansible-vars-iac_manifests.yaml \
   -e TFSTATE=$HOME/${deployment_name}-aks/viya4-iac-azure/terraform.tfstate \
-  -e ansible_python_interpreter=$HOME/pyvenv_${deploment_name}/bin/python \
+  -e ansible_python_interpreter=$HOME/pyvenv_${deployment_name}/bin/python \
   playbooks/playbook.yaml --tags "viya,install"
 
 ### OPENLDAP SETUP ###
@@ -344,7 +344,7 @@ curl $FQDN
 
 ## Sign in as SASBOOT
 echo "Go To https://$FQDN/SASEnvironmentManager/"
-echo "Sign in as 'sasboot' Use password: ${deployment_environment}admin"
+echo "Sign in as 'sasboot' Use password: ${deployment_environment_openldap_viyaadminspassword}"
 
 
 # ########################

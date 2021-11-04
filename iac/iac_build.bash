@@ -229,10 +229,10 @@ cat > ./addNFSstructure.yml << EOF
       insertafter: EOF
       marker: "  # {mark} ANSIBLE MANAGED BLOCK : base folder structure creation"
       block: |2
-          - mkdir -p /export/pvs /export/proving1/bin
-          - mkdir /export/proving1/data
-          - mkdir /export/proving1/homes
-          - mkdir /export/proving1/astores
+          - mkdir -p /export/pvs /export/${deployment_environment}/bin
+          - mkdir /export/${deployment_environment}/data
+          - mkdir /export/${deployment_environment}/homes
+          - mkdir /export/${deployment_environment}/astores
 EOF
 
 ## APPLY

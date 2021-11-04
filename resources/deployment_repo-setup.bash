@@ -158,16 +158,39 @@ git checkout tags/${deployment_viya4_viya4deployment_versiontag}
 
 
 ############################
+# DNS workaround for resolution with SAS VPN 
+############################
+sudo perl -i -e 's/nameserver 172.26.40.178/nameserver 8.8.8.8\nnameserver 172.26.40.178/' /etc/resolv.conf
+
+
+############################
 # AZURE CREDENTIALS
 ############################
-echo "[PROMPT] Login to Azure..."
-az login --use-device-code
-
+if ! [ $(az ad signed-in-user show | jq -S '.accountEnabled') ];
+then  
+    echo "[PROMPT] Login to Azure..."
+    az login --use-device-code | tee $HOME/${deployment_name}-aks/.azlogin
+    if ! [ $? == 0 ]
+    then
+        echo "[ERROR] Something went wrong Logging into Azure"
+        exit 1;
+    fi
+fi
 # Set Location & Subscription
 echo "[INFO] Setting default subscription to $deployment_azure_subscription"
 az account set -s ${deployment_azure_subscription}
+if ! [ $? == 0 ]
+then
+    echo "[ERROR] Something went wrong setting Azure subscription"
+    exit 1;
+fi
 echo "[INFO] Setting default location to $deployment_azure_location"
 az configure --defaults location=${deployment_azure_location}
+if ! [ $? == 0 ]
+    then
+    echo "[ERROR] Something went wrong setting Azure location"
+    exit 1;
+fi
 
 # Create an Azure Service Principal for Terraform
 echo "[INFO] Create an Azure Service Principal for Terraform."
@@ -176,9 +199,13 @@ if [ ! -f "$TFCREDFILE" ]; then
 SP_PASSWD=$(az ad sp create-for-rbac --skip-assignment --name ${deployment_name} --query password --output tsv)
 SP_APPID=$(az ad sp list --display-name "${deployment_name}" | jq -r '.[].appId')
 # give the "Contributor" role to your Azure SP
-# You only have to do it once !
 echo "[INFO] ... Assigning Contributor role"
 az role assignment create --assignee $SP_APPID --role Contributor
+if ! [ $? == 0 ]
+then
+    echo "[ERROR] Something went wrong Assigning Contributor role to the new Service Principal"
+    exit 1;
+fi
 
 # export the required values in TF required environment variables 
 export TF_VAR_subscription_id=$(az account list --query "[?name=='$deployment_azure_subscription'].{id:id}" -o tsv)
@@ -192,7 +219,7 @@ TF_VAR_client_id      -->   ${TF_VAR_client_id}
 TF_VAR_client_secret  -->   ${TF_VAR_client_secret}\n"
 
 # save the TF environment variables value for the next time
-if [ -z $TF_VAR_subscription_id ] && [ -z $TF_VAR_tenant_id ] && [ -z $TF_VAR_client_id ] && [ -z $TF_VAR_client_secret ]; then
+if [ ! -z $TF_VAR_subscription_id ] && [ ! -z $TF_VAR_tenant_id ] && [ ! -z $TF_VAR_client_id ] && [ ! -z $TF_VAR_client_secret ]; then
 tee $HOME/${deployment_name}-aks/TF_CLIENT_CREDS > /dev/null << EOF
 export TF_VAR_subscription_id=${TF_VAR_subscription_id}
 export TF_VAR_tenant_id=${TF_VAR_tenant_id}
@@ -209,8 +236,8 @@ echo "[INFO] Setting Terraform environment variables sourcing at login."
 ansible localhost -m lineinfile -a "dest=$HOME/.bashrc line='source $HOME/${deployment_name}-aks/TF_CLIENT_CREDS'" --diff
 echo "[INFO] To use different Terraform credentials for a different environment, comment and uncomment $HOME/.bashrc as required."
 else
-	echo "[ERROR] Something went wrong when creating the service principle"
-	exit 1;
+    echo "[ERROR] Something went wrong when creating the service principal"
+    exit 1;
 fi
 else
 source $HOME/${deployment_name}-aks/TF_CLIENT_CREDS
