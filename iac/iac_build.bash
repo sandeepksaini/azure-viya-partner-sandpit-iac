@@ -147,7 +147,7 @@ nfs_raid_disk_type                   = "${deployment_iac_storage_nfs_raid_diskty
 nfs_raid_disk_size                   = "${deployment_iac_storage_nfs_raid_disksize}"
 nfs_raid_disk_zones                  = ${deployment_iac_storage_nfs_raid_diskzones}
 #### Default Nodepool ####
-default_nodepool_vm_type             = "Standard_D4_v4"
+default_nodepool_vm_type             = "Standard_D8_v4"
 default_nodepool_min_nodes           = 1
 default_nodepool_os_disk_size        = 64
 node_pools_proximity_placement       = false
@@ -219,7 +219,8 @@ EOF
 
 # Adjustment to add the required paths for the nfs-clients to connect
 echo "[INFO] Workaround to add the required paths for the nfs-clients to connect."
-cat > ./addNFSstructure.yml << EOF
+mkdir -p $HOME/${deployment_name}-aks/viya4-iac-azure/files/cloud-init/nfs
+cat > $HOME/${deployment_name}-aks/viya4-iac-azure/addNFSstructure.yml << EOF
 ---
 - hosts: localhost
   tasks:
@@ -236,7 +237,7 @@ cat > ./addNFSstructure.yml << EOF
 EOF
 
 ## APPLY
-ansible-playbook ./addNFSstructure.yml --diff
+ansible-playbook $HOME/${deployment_name}-aks/viya4-iac-azure/addNFSstructure.yml --diff
 
 #####################################################################################
 # Generate the TF plan corresponding to the AKS cluster with multiple node pools ####

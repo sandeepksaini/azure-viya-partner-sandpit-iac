@@ -113,12 +113,12 @@ ansible-playbook $HOME/gen_ssh.yaml
 
 echo -e "[IMPORTANT] THIS SSH KEY HAS FULL ACCESS TO THE WHOLE DEPLOYMENT. GUARD IT WELL. \n    $HOME/.ssh/${deployment_name}_id_rsa.pub"
 
-echo "Your SSH public key needs to be added to Gitlab to maintain the deployment configuration there.
-Please copy the below text and add to to your profile in Gilab:
+# echo "Your SSH public key needs to be added to Gitlab to maintain the deployment configuration there.
+# Please copy the below text and add to to your profile in Gilab:
 
-$(cat $HOME/.ssh/${deployment_name}_id_rsa.pub)
+# $(cat $HOME/.ssh/${deployment_name}_id_rsa.pub)
 
-"
+# "
 
 ############################
 # Deployment resources setup locations

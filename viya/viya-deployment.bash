@@ -187,24 +187,6 @@ pip3 install -r requirements.txt
 
 # install ansible collections
 ansible-galaxy collection install -r requirements.yaml -f
-    
-# Gather required files, then generate Baseline & Viya deployment manifests
-echo "[INFO] Generate and Install basline"
-ansible-playbook \
-  -e BASE_DIR=$HOME \
-  -e CONFIG=$HOME/${deployment_name}-aks/${deployment_environment}/ansible-vars-iac_manifests.yaml \
-  -e TFSTATE=$HOME/${deployment_name}-aks/viya4-iac-azure/terraform.tfstate \
-  -e ansible_python_interpreter=$HOME/pyvenv_${deployment_name}/bin/python \
-  playbooks/playbook.yaml --tags "baseline,install"
-
-# Gather required files, then generate Baseline & Viya deployment manifests
-echo "[INFO] Generate but do not deploy the kustomize template for Viya 4 deployment"
-ansible-playbook \
-  -e BASE_DIR=$HOME \
-  -e CONFIG=$HOME/${deployment_name}-aks/${deployment_environment}/ansible-vars-iac_manifests.yaml \
-  -e TFSTATE=$HOME/${deployment_name}-aks/viya4-iac-azure/terraform.tfstate \
-  -e ansible_python_interpreter=$HOME/pyvenv_${deployment_name}/bin/python \
-  playbooks/playbook.yaml --tags "viya,install"
 
 ### OPENLDAP SETUP ###
 echo "[INFO] OpenLDAP modify users to suit the environment..."
@@ -214,12 +196,14 @@ firstname=$(echo ${deployment_git_user_email} | sed -re 's/([A-z-]+)\.([A-z-]+)@
 lastname=$(echo ${deployment_git_user_email} | sed -re 's/([A-z-]+)\.([A-z-]+)@sas\.com/\2/')
 sed -r -e "s/basic_user1@example.com/${deployment_git_user_email}/g" \
 -e "s/basic_user1/${deployment_git_user_name}/g" \
+-e "s/mySuperSecretPassword/${deployment_environment_openldap_viyaadminspassword}/g" \
 -e "s/Password123/${deployment_environment_openldap_viyaadminspassword}/g" \
 -e "s/Basic User 1/${firstname} ${lastname}/g" \
 -e "s/BasicUser/${lastname}/g" $HOME/${deployment_name}-aks/viya4-deployment/examples/openldap/openldap-modify-users.yaml > $HOME/${deployment_name}-aks/${deployment_environment}/site-config/openldap/openldap-modify-users.yaml
+
 ####
 #
-# MANUALLY EDIT THE USERS DETAILS IN
+# EDIT THE USERS DETAILS IN
 #    $HOME/${deployment_name}-aks/${deployment_environment}/site-config/openldap/openldap-modify-users.yaml
 ####
 
@@ -269,6 +253,24 @@ config:
             administrator: viya_admin
 EOF
 
+
+
+echo "[INFO] Generate and Install basline"
+ansible-playbook \
+  -e BASE_DIR=$HOME \
+  -e CONFIG=$HOME/${deployment_name}-aks/${deployment_environment}/ansible-vars-iac_manifests.yaml \
+  -e TFSTATE=$HOME/${deployment_name}-aks/viya4-iac-azure/terraform.tfstate \
+  -e ansible_python_interpreter=$HOME/pyvenv_${deployment_name}/bin/python \
+  playbooks/playbook.yaml --tags "baseline,install"
+
+# Gather required files, then generate Baseline & Viya deployment manifests
+echo "[INFO] Generate but do not deploy the kustomize template for Viya 4 deployment"
+ansible-playbook \
+  -e BASE_DIR=$HOME \
+  -e CONFIG=$HOME/${deployment_name}-aks/${deployment_environment}/ansible-vars-iac_manifests.yaml \
+  -e TFSTATE=$HOME/${deployment_name}-aks/viya4-iac-azure/terraform.tfstate \
+  -e ansible_python_interpreter=$HOME/pyvenv_${deployment_name}/bin/python \
+  playbooks/playbook.yaml --tags "viya,install"
 
 echo "[INFO] Add the pgAdmin pod overlay for access to the PostgreSQL servers"
 ansible localhost \
@@ -344,7 +346,7 @@ curl $FQDN
 
 ## Sign in as SASBOOT
 echo "Go To https://$FQDN/SASEnvironmentManager/"
-echo "Sign in as 'sasboot' Use password: ${deployment_environment_openldap_viyaadminspassword}"
+echo "Sign in as sasboot, viya_admin (the Viya Administrator account) or your own basic user account ${deployment_git_user_name},\n Use password:\n ${deployment_environment_openldap_viyaadminspassword}\n"
 
 
 # ########################

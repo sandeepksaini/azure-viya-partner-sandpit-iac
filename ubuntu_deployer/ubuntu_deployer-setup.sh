@@ -89,6 +89,11 @@ sudo unlink /etc/resolv.conf # this will unlink the default wsl2 resolv.conf
 sudo cp /run/resolvconf/resolv.conf /etc/resolv.conf
 sudo perl -p -i -e 's/nameserver 172\.26\.40\.178/nameserver 8.8.8.8\nnameserver 172.26.40.178/' /etc/resolv.conf
 
+cat <<EOF | sudo tee /etc/wsl.conf
+[network]
+generateResolvConf = false
+EOF
+
 # Make resolv.conf immutable so WSL doesn't clobber it on startup
 echo "[INFO] Make resolv.conf immutable to prevent clobbering by WSL on startup"
 sudo chattr -f +i /etc/resolv.conf;
