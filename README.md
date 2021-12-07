@@ -15,7 +15,7 @@ https://github.com/sassoftware/viya4-iac-azure
 
 https://github.com/sassoftware/viya4-deployment
 
-As changes are made and improvements/features are added the may or may not seamlessly merge. Work to include new components that require configuration may continue in the future if there is value seen in doing so.
+As changes are made and improvements/features are added they may or may not seamlessly merge. Work to include new components that require configuration may continue in the future if there is value seen in doing so.
 
 The default config files deploy the the environment with the following configuration:
 
