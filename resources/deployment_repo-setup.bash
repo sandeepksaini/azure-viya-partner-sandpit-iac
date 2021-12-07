@@ -190,8 +190,8 @@ fi
 echo "[INFO] Create an Azure Service Principal for Terraform."
 TFCREDFILE=$HOME/${deployment_name}-aks/TF_CLIENT_CREDS
 if [ ! -f "$TFCREDFILE" ]; then
-SP_PASSWD=$(az ad sp create-for-rbac --skip-assignment --name ${deployment_name} --query password --output tsv)
-SP_APPID=$(az ad sp list --display-name "${deployment_name}" | jq -r '.[].appId')
+SP_PASSWD=$(az ad sp create-for-rbac --skip-assignment --name ${deployment_name}-sp --query password --output tsv)
+SP_APPID=$(az ad sp list --display-name "${deployment_name}-sp" | jq -r '.[].appId')
 # give the "Contributor" role to your Azure SP
 echo "[INFO] ... Assigning Contributor role"
 az role assignment create --assignee $SP_APPID --role Contributor
