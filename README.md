@@ -12,6 +12,7 @@ The aim of the Azure Viya CA Env IAC is to enable fast deployment of SAS Viya (4
 I have utilized the existing automation in these awesome repositories:
 
 https://github.com/sassoftware/viya4-iac-azure
+
 https://github.com/sassoftware/viya4-deployment
 
 As changes are made and improvements/features are added the may or may not seamlessly merge. Work to include new components that require configuration may continue in the future if there is value seen in doing so.
@@ -53,10 +54,10 @@ Log into your Ubuntu 20.04 machine and clone this Repo:
 git clone https://gitlab.sas.com/ssaima/azure-viya-ca-env-iac
 ```
 #### Step 2 - Edit
-core-variables.yaml MUST be edited with your own details (name email etc)
+*core-variables.yaml* MUST be edited with your own details (name email etc)
 
 There are four scripts that each must be run  to complete the process, each with its own folder also containing a variables yaml file.
-resources/deployment_repo-variables.yaml MUST be edited with your own software order information.
+*resources/deployment_repo-variables.yaml* MUST be edited with your own software order information.
 All other variables files contain tested default values. These can be customized to your requirement but changes to client software versions (such as ansible, kubectl or terraform) can cause issues that will need manual troubleshooting and intervention.
 
 
@@ -69,7 +70,7 @@ All other variables files contain tested default values. These can be customized
 
 ### Troubleshooting
 
-In general the scripts provide meaningful error messaging. If a step clearly fails to complete successfully in the execution of a script it is unlikely that subsequent steps will succeed. Read the error message, understand what it is saying and what could be causing the problem and try to take corrective action, then run the failed script again.
+In general the scripts provide meaningful error messaging. If a step clearly fails to complete successfully in the execution of a script, it is unlikely that subsequent steps will succeed. Read the error message, understand what it is saying and what could be causing the problem and try to take corrective action, then run the failed script again.
 
 The aim is to build tasks in each script that are idempotent, such that re-running would not break anything. However strictly adhering to  this ideal is an ongoing challenge.
 
