@@ -346,7 +346,7 @@ curl $FQDN
 
 ## Sign in as SASBOOT
 echo "Go To https://$FQDN/SASEnvironmentManager/"
-echo "Sign in as sasboot, viya_admin (the Viya Administrator account) or your own basic user account ${deployment_git_user_name},\n Use password:\n ${deployment_environment_openldap_viyaadminspassword}\n"
+echo -e "Sign in as sasboot, viya_admin (the Viya Administrator account) or your own basic user account ${deployment_git_user_name},\n Use password:\n ${deployment_environment_openldap_viyaadminspassword}\n"
 
 
 # ########################
