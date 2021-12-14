@@ -254,15 +254,6 @@ config:
 EOF
 
 
-
-echo "[INFO] Generate and Install basline"
-ansible-playbook \
-  -e BASE_DIR=$HOME \
-  -e CONFIG=$HOME/${deployment_name}-aks/${deployment_environment}/ansible-vars-iac_manifests.yaml \
-  -e TFSTATE=$HOME/${deployment_name}-aks/viya4-iac-azure/terraform.tfstate \
-  -e ansible_python_interpreter=$HOME/pyvenv_${deployment_name}/bin/python \
-  playbooks/playbook.yaml --tags "baseline,install"
-
 # Gather required files, then generate Baseline & Viya deployment manifests
 echo "[INFO] Generate but do not deploy the kustomize template for Viya 4 deployment"
 ansible-playbook \
@@ -270,7 +261,7 @@ ansible-playbook \
   -e CONFIG=$HOME/${deployment_name}-aks/${deployment_environment}/ansible-vars-iac_manifests.yaml \
   -e TFSTATE=$HOME/${deployment_name}-aks/viya4-iac-azure/terraform.tfstate \
   -e ansible_python_interpreter=$HOME/pyvenv_${deployment_name}/bin/python \
-  playbooks/playbook.yaml --tags "viya,install"
+  playbooks/playbook.yaml --tags "baseline,viya,install"
 
 echo "[INFO] Add the pgAdmin pod overlay for access to the PostgreSQL servers"
 ansible localhost \
@@ -307,6 +298,11 @@ kustomize build -o site.yaml
 ### DEPLOYMENT STEP ###
 #######################
 echo "[INFO] BEGIN DEPLOYMENT..."
+
+# Apply cluster-api resources to the cluster
+kubectl apply --selector="sas.com/admin=cluster-api" -f site.yaml
+kubectl wait  --for condition=established --timeout=60s -l "sas.com/admin=cluster-api" crd
+
 # Apply the "cluster wide" configuration in site.yaml (CRDs, Roles, Service Accounts)
 kubectl apply --selector="sas.com/admin=cluster-wide" -f site.yaml
 

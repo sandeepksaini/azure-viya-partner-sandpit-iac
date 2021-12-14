@@ -107,14 +107,14 @@ All other variables files contain current tested default values. These can be cu
 Well, YOU are at least. The system itself is working hard still..
 You should get a message once deployment is complete with a URL and credentials to log in. However, your SAS pods are still getting scheduled and starting up on the set of node pools and this will still take some time to complete. Each of the nodes must download the container images from the SAS repository for each of the pods it's running. Bandwidth limits the speed that this can occur, so although you've done your bit the deployment still has a fair amount to work through.
 
-### Troubleshooting
+## Troubleshooting
 
 In general the scripts provide meaningful error messaging. If a step clearly fails to complete successfully in the execution of a script, it is unlikely that subsequent steps will succeed. Read the error message, understand what it is saying and what could be causing the problem and try to take corrective action, then run the failed script again.
 
 The aim is to build tasks in each script that are idempotent, such that re-running would not break anything. However strictly adhering to this ideal is an ongoing challenge.
 
 
-### This is where the Automation Ends...
+## This is where the Automation Ends...
 
 Now that you have a Viya deployment, you need to look after it. I've put a few scripts and snippets here that I use to help you out:
 
@@ -143,7 +143,7 @@ The artifacts, repos and configuration written by the four scripts is placed in 
 ```
 cd ~/$(deployment_name)-aks
 ```
-Inside this folder there are many folder and files now. Two of these folders, *viya4-iac-azure is the cloned repos for the sassoftware github Infrastructure-As-Code with edits made specific to your deployment. Here you can add, edit and apply changes using terraform as you might with any other Viya deployment.
+Inside this folder there are many folder and files now. The *viya4-iac-azure* folder is the cloned repo for the sassoftware github Infrastructure-As-Code, with edits made specific to your deployment. Here you can add, edit and apply changes using terraform as you might with any other Viya deployment.
 
 Re-generate the Terraform plan after making changes to the infrastructure specification (eg. adding more nodes to a pool)
 ```
@@ -187,7 +187,7 @@ kustomize build -o site.yaml
 kubectl apply -f site.yaml
 ```
 
-#### Destroy Everything!!
+## Destroy Everything!!
 
 So you're done and now you need to get rid of it all? Forever? Irretrievably?
 Simple, you just need to create a terraform "destroy" plan:
@@ -204,7 +204,6 @@ terraform plan -input=false \
 echo "[INFO] Destroying the AKS cluster infra"
 time terraform apply $deployment_name-aks-destroy.plan 2>&1 \
 | tee -a $HOME/${deployment_name}-aks/viya4-iac-azure/$(date +%Y%m%dT%H%M%S)_terraform-destroy.log
-##################################################
 ```
 
 All gone!
