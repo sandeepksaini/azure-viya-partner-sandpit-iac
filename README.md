@@ -123,7 +123,7 @@ Now that you have a Viya deployment, you need to look after it. I've put a few s
 ```
 ~/pyenv_ssaima/bin/activate
 ```
-(This is the example for my environment, substitute ssaima with your $eployment_name.)
+(This is the example for my environment, substitute ssaima with your $deployment_name.)
 A lot of the client tools use python and the cleanest way to maintain dependencies is to use a virtual environment. One has been set up during the deployment and it is for THIS deployment specifically (has all the right versions). Whenever you log on to administer this environment you should first activate  using the binary
 
 ```
