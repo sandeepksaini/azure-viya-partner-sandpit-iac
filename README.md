@@ -91,7 +91,7 @@ All other variables files contain current tested default values. These can be cu
 ```
 2. resources - Retrieves all the required resources from other git repos and download locations and sets them up on your local machine
 ```
-./resources/deployment_repo-variables.yaml
+./resources/deployment_repo-setup.bash
 ```
 3. iac - Creates the specified infrastructure in your Azure subscription to support the SAS Software deployment (using Terraform)
 ```
@@ -143,7 +143,7 @@ The artifacts, repos and configuration written by the four scripts is placed in 
 ```
 cd ~/$(deployment_name)-aks
 ```
-Inside this folder there are many folder and files now. The *viya4-iac-azure* folder is the cloned repo for the sassoftware github Infrastructure-As-Code, with edits made specific to your deployment. Here you can add, edit and apply changes using terraform as you might with any other Viya deployment.
+Inside this folder there are many folders and files now. The *viya4-iac-azure* folder is the cloned repo for the sassoftware github Infrastructure-As-Code, with edits made specific to your deployment. Here you can add, edit and apply changes using terraform as you might with any other Viya deployment.
 
 Re-generate the Terraform plan after making changes to the infrastructure specification (eg. adding more nodes to a pool)
 ```
