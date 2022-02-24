@@ -2,8 +2,7 @@
 [Link](https://gitlab.sas.com/ssaima/azure-viya-ca-env-iac)
 
 Full Infrastructure and software deployment orchestration for SAS Viya 4 on Azure K8s.
-
-Use-case: Create a dedicated Azure K8s deployment of SAS Viya 4 for the purposes of a PoX or paid demonstration. Capably sized and deployable in 24 hours.
+Use-case: Create a dedicated Azure K8s deployment of SAS Viya 4 for the purposes of a Partner Sandpit. Capably sized and deployable in 24 hours.
 
 
 ## Description
@@ -27,16 +26,16 @@ The default config files deploy the the environment with the following configura
 Variables files allow you to vary the specification of the infrastructure easily (see below)
 
 ## Getting Started
+### Set Up Prerequisites
 
 ### Dependencies
 * You must have an Azure subscription to which you (your own Azure login) have authority to create Service Principals with Contributor roles
-    * Being the Owner of your own Azure subscription is the target use-case here
-    * Go here to request one: https://go.sas.com/cloud
+* Being the Owner of your own Azure subscription is the target use-case here
 * You must have a Viya 4 order (your own order, that you have created)
     * I won’t go into how you get a SAS software order internally, other to leave some relevant links:
         * https://makeorder.sas.com/makeorder/
-        * https://rndconfluence.sas.com/confluence/display/RLSENG/Accessing+internal+container+images+from+external+locations 
-* You must have access to your order at https://my.sas.com/en/my-orders.html 
+        * https://rndconfluence.sas.com/confluence/display/RLSENG/Accessing+internal+container+images+from+external+locations
+* You must have access to your order at https://my.sas.com/en/my-orders.html
 * You must have a Ubuntu machine connected to the SAS corporate network via vpn.sas.com/secure
     * The best way to achieve this is to utilise the latest Windows Subsystem for Linux (WSL2) release of Ubuntu
     * Open the Microsoft Store on your SAS laptop
@@ -55,7 +54,7 @@ git clone https://gitlab.sas.com/ssaima/azure-viya-ca-env-iac
 ```
 #### Step 2 - Edit
 *core-variables.yaml* MUST be edited with your own details, git credentials for SAS gitlab, your Azure subscription details and two central variables you need to choose:
-    {deployment_name} - The label stem for many of the infrastructure and resources and the 
+    {deployment_name} - The label stem for many of the infrastructure and resources and the
     {deployment_environment} - The environment name for THIS Viya 4 deployment and the name of the kubernetes namespace for it.
 
 It is IMPORTANT that BOTH of these variables conform to a few rules:
@@ -160,7 +159,7 @@ cd $HOME/${deployment_name}-aks/viya4-iac-azure
 terraform plan -input=false \
     -var-file=./${deployment_name}.tfvars \
     -out ./${deployment_name}-aks.plan
-	
+
 cd $HOME/${deployment_name}-aks/viya4-iac-azure
 TFPLAN=${deployment_name}-aks.plan
 
@@ -216,4 +215,3 @@ All gone!
 [Isaac Marsh](mailto:Isaac.Marsh@sas.com)
 
 ## Version History
-
