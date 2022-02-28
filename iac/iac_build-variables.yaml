@@ -8,7 +8,7 @@ deployment:
     assetspath: '$(ls -1 $HOME/${deployment_name}-aks/orders/${deployment_viya4_ordernumber}/${deployment_viya4_cadencename}/${deployment_viya4_cadenceversion}/SASViyaV4_${deployment_viya4_ordernumber}_${deployment_viya4_cadencename}_${deployment_viya4_cadenceversion}*.tgz | tail -n1)'
   iac:
     kubernetes:
-      version: "1.21.2"
+      version: "1.21.7"
     network:
       #192.31.37.2/32		vpn.sas.com/secure
       defaultpublicaccesscidrs: "[\"192.31.37.2/32\"]"

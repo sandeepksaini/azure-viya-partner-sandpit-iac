@@ -5,11 +5,15 @@ deployment:
   viya4:
     # Get this information from your POC Viya Order - https://apiportal.sas.com/get-started
     cadencename: 'stable'
-    cadenceversion: '2021.1.5'
+    cadenceversion: '2021.2.4'
     ordernumber: '09XXXX'
     orderapikey: 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
     orderapisecret: 'XXXXXXXXXXXXXXXX'
-    iacazure: 
-      tag: '4.0.0'
+    # This information corresponds to the SAS Supported azure iac GIT repo
+    # https://github.com/sassoftware/viya4-iac-azure
+    iacazure:
+      tag: '4.2.0'
+    # This information corresponds to the SAS supported azure viya deployment GIT repo
+    # https://github.com/sassoftware/viya4-deployment
     viya4deployment:
-      versiontag: '4.3.0'
+      versiontag: '4.7.0'
