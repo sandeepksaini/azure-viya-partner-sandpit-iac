@@ -1,5 +1,5 @@
-# Azure Viya CA Env IAC
-[Link](https://gitlab.sas.com/ssaima/azure-viya-ca-env-iac)
+# Azure Viya Partner Env IAC
+[Link](https://gitlab.sas.com/ssaang/azure-viya-ca-env-iac)
 
 Full Infrastructure and software deployment orchestration for SAS Viya 4 on Azure K8s.
 Use-case: Create a dedicated Azure K8s deployment of SAS Viya 4 for the purposes of a Partner Sandpit. Capably sized and deployable in 24 hours.
@@ -7,8 +7,8 @@ Use-case: Create a dedicated Azure K8s deployment of SAS Viya 4 for the purposes
 
 ## Description
 
-The aim of the Azure Viya CA Env IAC is to enable fast deployment of SAS Viya (4) deployed on Azure Kubernetes Service (AKS).
-I have utilized the existing automation in these awesome repositories:
+The aim of the Azure Viya Partner Env IAC is to enable fast deployment of SAS Viya (4) deployed on Azure Kubernetes Service (AKS).
+For this project we've utilized the existing automation in these SAS Repositories:
 
 https://github.com/sassoftware/viya4-iac-azure
 
@@ -20,7 +20,7 @@ The default config files deploy the the environment with the following configura
 
 * Multiple node pools (stateless, stateful, cas, compute, connect)
 * Default Internal “Crunchy” PostgreSQL DB
-* OpenLDAP for independent management of all users and groups
+* OpenLDAP for independent management of all users and groups ( not working)
 * NFS Server for application and user (home) data
 
 Variables files allow you to vary the specification of the infrastructure easily (see below)
@@ -31,12 +31,10 @@ Variables files allow you to vary the specification of the infrastructure easily
 ### Dependencies
 * You must have an Azure subscription to which you (your own Azure login) have authority to create Service Principals with Contributor roles
 * Being the Owner of your own Azure subscription is the target use-case here
-* You must have a Viya 4 order (your own order, that you have created)
-    * I won’t go into how you get a SAS software order internally, other to leave some relevant links:
-        * https://makeorder.sas.com/makeorder/
-        * https://rndconfluence.sas.com/confluence/display/RLSENG/Accessing+internal+container+images+from+external+locations
+* You must have a Viya 4 order ( supplied by your SAS partner representative)
 * You must have access to your order at https://my.sas.com/en/my-orders.html
-* You must have a Ubuntu machine connected to the SAS corporate network via vpn.sas.com/secure
+* You must create an Ubuntu machine connected to your network via your own vpn  
+* was vpn.sas.com/secure
     * The best way to achieve this is to utilise the latest Windows Subsystem for Linux (WSL2) release of Ubuntu
     * Open the Microsoft Store on your SAS laptop
     * Type ‘Ubuntu 20.04 LTS’ in the search bar
@@ -50,7 +48,7 @@ Variables files allow you to vary the specification of the infrastructure easily
 #### Step 1 - Clone
 Log into your Ubuntu 20.04 machine and clone this Repo:
 ```
-git clone https://gitlab.sas.com/ssaima/azure-viya-ca-env-iac
+git clone https://gitlab.sas.com/ssaang/azure-viya-ca-env-iac
 ```
 #### Step 2 - Edit
 *core-variables.yaml* MUST be edited with your own details, git credentials for SAS gitlab, your Azure subscription details and two central variables you need to choose:
@@ -68,7 +66,7 @@ cd azure-viya-ca-env-iac
 vi core-variables.yaml
 ```
 
-When your deployment is complete, the environment will be accessed on the URL {deployment_environment}-{deployment_name}.{azure_location}.cloudapp.azure.com. So as an example, I use my SAS short ID as my *deployment_name* and a simple short name indicating the Viya environment's purpose like *proving*, making the URL:
+When your deployment is complete, the environment will be accessed on the URL {deployment_environment}-{deployment_name}.{azure_location}.cloudapp.azure.com. So as an example, I use sandpit as my *deployment_name* and a simple short name indicating the Viya environment's purpose like *sandpit*, making the URL:
     *proving-ssaima.australiaeast.cloudapp.azure.com*
 This is to facilitate deploying multiple environments to a single set of kubernetes infrastructure, as well as deploying other adjacent services to explore integration.
 
