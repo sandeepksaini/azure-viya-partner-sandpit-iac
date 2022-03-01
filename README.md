@@ -118,13 +118,13 @@ Now that you have a Viya deployment, you need to look after it. I've put a few s
 #### Shell Environment
 
 ```
-~/pyenv_ssaima/bin/activate
+source ~/pyvenv_ssaima/bin/activate
 ```
 (This is the example for my environment, substitute ssaima with your $deployment_name.)
 A lot of the client tools use python and the cleanest way to maintain dependencies is to use a virtual environment. One has been set up during the deployment and it is for THIS deployment specifically (has all the right versions). Whenever you log on to administer this environment you should first activate  using the binary
 
 ```
-source source_all.bash
+source $HOME/azure-viya-ca-env-iac/source_all.bash
 ```
 This simply sources all the variables used in the deployment for use in your current shell. Very helpful if you have multiple environments as you can use shell parameterized commands with automatic substitution. Below are some of these examples.
 
@@ -145,7 +145,7 @@ Inside this folder there are many folders and files now. The *viya4-iac-azure* f
 Re-generate the Terraform plan after making changes to the infrastructure specification (eg. adding more nodes to a pool)
 ```
 # Don't forget to setup your shell with python virtual env and shell environment variables
-~/pyenv_ssaima/bin/activate
+source ~/pyvenv_ssaima/bin/activate
 source $HOME/azure-viya-ca-env-iac/source_all.bash
 
 cd $HOME/${deployment_name}-aks/viya4-iac-azure
