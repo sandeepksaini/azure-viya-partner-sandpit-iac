@@ -210,7 +210,7 @@ All gone!
 
 ## Authors
 
-[Andrew Gregg] (mailto:Amdrew.Gregg@sas.com)
+[Andrew Gregg] (mailto:Andrew.Gregg@sas.com)
 
 ## Thanks to
 
