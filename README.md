@@ -210,6 +210,10 @@ All gone!
 
 ## Authors
 
-[Isaac Marsh](mailto:Isaac.Marsh@sas.com)
+[Andrew Gregg] (mailto:Amdrew.Gregg@sas.com)
+
+## Thanks to
+
+Isaac Marsh
 
 ## Version History
