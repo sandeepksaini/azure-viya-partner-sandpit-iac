@@ -66,8 +66,8 @@ cd azure-viya-ca-env-iac
 vi core-variables.yaml
 ```
 
-When your deployment is complete, the environment will be accessed on the URL {deployment_environment}-{deployment_name}.{azure_location}.cloudapp.azure.com. So as an example, I use sandpit as my *deployment_name* and a simple short name indicating the Viya environment's purpose like *sandpit*, making the URL:
-    *proving-ssaima.australiaeast.cloudapp.azure.com*
+When your deployment is complete, the environment will be accessed on the URL {deployment_environment}-{deployment_name}.{azure_location}.cloudapp.azure.com. So as an example, I use partner as my *deployment_name* and a simple short name indicating the Viya environment's purpose like *sandpit*, making the URL:
+    *sandpit-partner.australiaeast.cloudapp.azure.com*
 This is to facilitate deploying multiple environments to a single set of kubernetes infrastructure, as well as deploying other adjacent services to explore integration.
 
 
