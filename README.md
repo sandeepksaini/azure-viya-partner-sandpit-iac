@@ -133,6 +133,22 @@ This simply sources all the variables used in the deployment for use in your cur
 kubectl get pods -o wide -n ${deployment_environment}
 ```
 See all the pods starting up and look for issues and errors.
+#### Getting your credentials for applying changes
+Before making changes there are 4 terraform variables that need to be set
+These variables are set in the  $deployment_name.tfvars file in the
+Azure Auth Section
+uncomment and quote the values for the following
+ tenant_id = ""
+ subscription_id = ""
+ client_id = ""
+ client_secret = ""
+
+Make changes in the ${deployment_name}.tfvars file
+```
+cd ~/${deployment_name}-aks/viya4-iac-azure
+nano ${deployment_name}.tfvars
+```
+They are
 
 #### Making changes
 
