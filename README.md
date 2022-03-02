@@ -135,7 +135,7 @@ kubectl get pods -o wide -n ${deployment_environment}
 See all the pods starting up and look for issues and errors.
 #### Getting your credentials for applying changes
 Before making changes there are 4 terraform variables that need to be set
-These variables are set in the  $deployment_name.tfvars file in the
+These variables are set in the  ${deployment_name}.tfvars file in the
 Azure Auth Section
 uncomment and quote the values for the following
  tenant_id = ""
@@ -182,9 +182,7 @@ time terraform apply "./${TFPLAN}" 2>&1 \
 | tee -a $HOME/${deployment_name}-aks/viya4-iac-azure/$(date +%Y%m%dT%H%M%S)_terraform-apply.log
 
 # After this you may need to regenerate your kube_config file
-terraform output kube_config | sed '1d;$d' > ~/.kube/${deployment_name}-aks-kubeconfig.conf
-kubectl config set-context --current --namespace=${deployment_environment}
-
+terraform output kube_config | sed '1d;$d' > ~/.kube/${deployment_name}-aks-kubeconfig.confcd
 ```
 
 The $deployment_environment folder (eg. *proving* for my example) contains the kubernetes configuration for your Viya software environment. In here you can add and remove resources, configurations, transformers, generators and components into the site-config folder, and corresponding references in kustomization.yaml to change the kubernetes deployment.
@@ -198,6 +196,7 @@ cd $HOME/${deployment_name}-aks/${deployment_environment}/
 kustomize build -o site.yaml
 
 kubectl apply -f site.yaml
+
 ```
 
 ## Destroy Everything!!
