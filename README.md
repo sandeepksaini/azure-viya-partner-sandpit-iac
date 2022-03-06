@@ -1,5 +1,5 @@
 # Azure Viya Partner Env IAC
-[Link](https://gitlab.sas.com/ssaang/azure-viya-ca-env-iac)
+[Link](https://github.com/andrewGreggSAS/azure-viya-partner-sandpit-iac)
 
 Full Infrastructure and software deployment orchestration for SAS Viya 4 on Azure K8s.
 Use-case: Create a dedicated Azure K8s deployment of SAS Viya 4 for the purposes of a Partner Sandpit. Capably sized and deployable in 24 hours.
@@ -48,7 +48,7 @@ Variables files allow you to vary the specification of the infrastructure easily
 #### Step 1 - Clone
 Log into your Ubuntu 20.04 machine and clone this Repo:
 ```
-git clone https://gitlab.sas.com/ssaang/azure-viya-ca-env-iac
+git clone https://github.com/andrewGreggSAS/azure-viya-partner-sandpit-iac
 ```
 #### Step 2 - Edit
 *core-variables.yaml* MUST be edited with your own details, git credentials for SAS gitlab, your Azure subscription details and two central variables you need to choose:
